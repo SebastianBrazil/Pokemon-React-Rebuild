@@ -2,7 +2,7 @@ export interface localStoredPoke {
     // pokemon: string[]
 }
 
-export interface pokeInterface{
+export interface pokeInterface {
     abilities: [],
     types: [],
     moves: [],
@@ -20,18 +20,26 @@ export interface pokeInterface{
     location_area_encounters: string
 }
 
-export interface pokePropsF{
+export interface pokeLocationArr {
+    [0]: {
+        location_area: {
+            name: string
+            url: string
+        }
+    }
+}
+export interface pokePropsF {
     normalFront: string
 }
 
-export interface pokePropsS{
+export interface pokePropsS {
     shinyFront: string
 }
 
-export interface pokePropsN{
+export interface pokePropsN {
     name: string
 }
 
-export interface pokePropsI{
+export interface pokePropsI {
     id: number
 }

@@ -10,8 +10,8 @@ import heartOut from "../assets/heartOut.png";
 import plus from "../assets/plus.png";
 import redC from "../assets/redC.png";
 import yellowC from "../assets/yellowC.png";
-import { pokeInterface } from '../interfaces/interfaces';
-import { callFetchPoke, popLocate } from '../DataServices/DataServices';
+import { pokeInterface, pokeLocationArr } from '../interfaces/interfaces';
+import { callFetchPoke, grabAPI } from '../DataServices/DataServices';
 import NormalPokeImgComponent from './minorComps/NormalPokeImgComponent';
 import ShinyPokeImgComponent from './minorComps/ShinyPokeImgComponent';
 import PokeNameComponent from './minorComps/PokeNameComponent';
@@ -37,60 +37,75 @@ const MainComponent = () => {
         location_area_encounters: "Loading..."
     }
 
+    const pokeLocationArrHolder: pokeLocationArr = {
+        [0]: {
+            location_area: {
+                name: "Empty",
+                url: "Empty"
+            }
+        }
+    }
+
+    const [isFlipped, setIsFlipped] = useState<boolean>(false);
     const [input, setInput] = useState<string>("bulbasaur");
-    const [data, setData] = useState<pokeInterface>(pokeInterfaceHolder);
     const [location, setLocation] = useState<string>("Loading...");
+
+    const [data, setData] = useState<pokeInterface>(pokeInterfaceHolder);
+    const [saveLocation, setSaveLocation] = useState<pokeLocationArr>(pokeLocationArrHolder);
+
+    const [drilledLocOne, setDrilledLocOne] = useState<>();
+    const [drilledLocTwo, setDrilledLocTwo] = useState<>();
 
     function callSearch() {
         if (input.toLowerCase() !== "") {
-            callFetchPoke(input.toLowerCase())
+            setIsFlipped(!isFlipped);
         }
     }
 
     useEffect(() => {
         const getData = async () => {
-            const pokeData = await callFetchPoke(input);
+            const pokeData = await callFetchPoke(input.toLowerCase());
             setData(pokeData);
         }
-        getData();
+        // getData();
 
-        fetchMeTheirSouls(data);
-    }, [])
-
-    function fetchMeTheirSouls(data: pokeInterface) {
         if (data.id > 649) {
             console.log("hey");
         } else {
-            PopPoke(data);
-        }
-    }
+            const getLocationData = async () => {
+                const locationData = await grabAPI(data.location_area_encounters);
+                setSaveLocation(locationData);
+            }
+            getLocationData();
 
-    async function PopPoke(data: pokeInterface) {
-        const locationData = await popLocate(data.location_area_encounters);
-
-        if (locationData[0]?.location_area?.name !== undefined) {
-            const promise2 = await fetch(`${locationData[0].location_area.url}`);
-            const data2 = await promise2.json();
-
-            const promise3 = await fetch(`${data2.location.url}`);
-            const data3 = await promise3.json();
-
-            if (data3.id < 567) {
-                let locationName = locationData[0].location_area.name.split("-");
-                for (let i = 0; i < locationName.length; i++) {
-                    locationName[i] = locationName[i][0].toUpperCase() + locationName[i].substring(1);
+            // console.log(saveLocation)
+            if (saveLocation[0]?.location_area?.name !== "Empty") {
+                const callLocDrillOne = async() => {
+                    // const drilledOne = await grabAPI(`${saveLocation[0].location_area.url}`);
+                    setDrilledLocOne(await grabAPI(`${saveLocation[0].location_area.url}`));
                 }
-                setLocation("Location: " + locationName.join(" ") + ", Pokemon " + locationData[0].version_details[0].version.name[0].toUpperCase() + locationData[0].version_details[0].version.name.substring(1));
+                // callLocDrillOne();
+
+                const callLocDrillTwo = async() => {
+                    // const drilledOne = await grabAPI(`${saveLocation[0].location_area.url}`);
+                    setDrilledLocTwo(await grabAPI(`${drilledLocOne[0].location.url}`));
+                }
+                // callLocDrillTwo();
+
+                // if (drilledLocTwo.id < 567) {
+                    // let locationName = locationData[0].location_area.name.split("-");
+                    // for (let i = 0; i < locationName.length; i++) {
+                    //     locationName[i] = locationName[i][0].toUpperCase() + locationName[i].substring(1);
+                    // }
+                    // setLocation("Location: " + locationName.join(" ") + ", Pokemon " + locationData[0].version_details[0].version.name[0].toUpperCase() + locationData[0].version_details[0].version.name.substring(1));
+                // } else {
+                //     setLocation("Location: N/A");
+                // }
             } else {
                 setLocation("Location: N/A");
-            }
-        } else {
-            setLocation("Location: N/A");
-        };
-    }
-
-
-
+            };
+        }
+    }, [isFlipped])
 
     return (
         <div>

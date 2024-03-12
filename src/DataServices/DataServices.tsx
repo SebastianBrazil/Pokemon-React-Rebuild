@@ -14,8 +14,19 @@ export const callFetchPoke = async (input: string) => {
     // };
 }
 
-export const popLocate = async (topData: string) => {
+export const grabAPI = async (topData: string) => {
     const promise = await fetch(`${topData}`);
     const data = await promise.json();
     return data;
 }
+
+// export const popLocateDrillOne = async (topData: string) => {
+//     const promise = await fetch(`${topData}`);
+//     const data = await promise.json();
+//     return data;
+// }
+// export const popLocate = async (topData: string) => {
+//     const promise = await fetch(`${topData}`);
+//     const data = await promise.json();
+//     return data;
+// }
