@@ -16,6 +16,6 @@ export const callFetchPoke = async (input: string) => {
 
 export const grabAPI = async (topData: string) => {
     const promise = await fetch(`${topData}`);
-    const data: pokeLocationArr = await promise.json();
+    const data = await promise.json();
     return data;
 }

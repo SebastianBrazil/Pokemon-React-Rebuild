@@ -10,68 +10,19 @@ import heartOut from "../assets/heartOut.png";
 import plus from "../assets/plus.png";
 import redC from "../assets/redC.png";
 import yellowC from "../assets/yellowC.png";
-import { drilledOneLoc, drilledTwoLoc, pokeInterface, pokeLocationArr } from '../interfaces/interfaces';
-import { callFetchPoke, grabAPI } from '../DataServices/DataServices';
+import { pokeInterface } from '../interfaces/interfaces';
+import { callFetchPoke } from '../DataServices/DataServices';
 import NormalPokeImgComponent from './minorComps/NormalPokeImgComponent';
 import ShinyPokeImgComponent from './minorComps/ShinyPokeImgComponent';
 import PokeNameComponent from './minorComps/PokeNameComponent';
 import PokeIdComponent from './minorComps/PokeIdComponent';
+import LocComponent from './minorComps/LocComponent';
 
 const MainComponent = () => {
-
-    const pokeInterfaceHolder: pokeInterface = {
-        abilities: [],
-        types: [],
-        moves: [],
-        name: "Loading...",
-        id: 0,
-        sprites: {
-            other: {
-                ["official-artwork"]: {
-                    front_default: "Loading...",
-                    front_shiny: "Loading..."
-                }
-            }
-        },
-        species: {},
-        location_area_encounters: "Loading..."
-    }
-
-    const pokeLocationArrHolder: pokeLocationArr = {
-        [0]: {
-            location_area: {
-                name: "Empty",
-                url: "Empty"
-            },
-            version_details: {
-                [0]: {
-                    version: {
-                        name: "Empty"
-                    }
-                }
-            }
-        }
-    }
-
-    const drilledOneLocHolder: drilledOneLoc = {
-        location: {
-            url: "Empty"
-        }
-    }
-
-    const drilledTwoLocHolder: drilledTwoLoc = {
-        id: 0
-    }
-
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
     const [input, setInput] = useState<string>("bulbasaur");
-    const [location, setLocation] = useState<string>("Loading...");
 
-    const [data, setData] = useState<pokeInterface>(pokeInterfaceHolder);
-    const [saveLocation, setSaveLocation] = useState<pokeLocationArr>(pokeLocationArrHolder);
-
-    const [drilledLocOne, setDrilledLocOne] = useState<drilledOneLoc>(drilledOneLocHolder);
-    const [drilledLocTwo, setDrilledLocTwo] = useState<drilledTwoLoc>(drilledTwoLocHolder);
+    const [data, setData] = useState<pokeInterface>();
 
     function callSearch() {
         if (input.toLowerCase() !== "") {
@@ -83,49 +34,11 @@ const MainComponent = () => {
         const getData = async () => {
             const pokeData = await callFetchPoke(input.toLowerCase());
             setData(pokeData);
+            setInput("");
         }
         getData();
-
-        console.log(data)
-
-        if (data.id > 649) {
-            console.log("hey");
-        } else {
-            const getLocationData = async () => {
-                const locationData = await grabAPI(data.location_area_encounters);
-                setSaveLocation(locationData);
-            }
-            getLocationData();
-
-            console.log(saveLocation)
-            // if (saveLocation[0].location_area.name !== "Empty") {
-            //     const callLocDrill = async() => {
-            //         // const drilledOne = await grabAPI(`${saveLocation[0].location_area.url}`);
-            //         setDrilledLocOne(await grabAPI(`${saveLocation[0].location_area.url}`));
-            //         setDrilledLocTwo(await grabAPI(`${drilledLocOne.location.url}`));
-            //     }
-            //     callLocDrill();
-
-            //     // const callLocDrillTwo = async() => {
-            //     //     // const drilledOne = await grabAPI(`${saveLocation[0].location_area.url}`);
-            //     //     setDrilledLocTwo(await grabAPI(`${drilledLocOne[0].location.url}`));
-            //     // }
-            //     // callLocDrillTwo();
-
-            //     if (drilledLocTwo.id < 567) {
-            //         let locationName = saveLocation[0].location_area.name.split("-");
-            //         for (let i = 0; i < locationName.length; i++) {
-            //             locationName[i] = locationName[i][0].toUpperCase() + locationName[i].substring(1);
-            //         }
-            //         setLocation("Location: " + locationName.join(" ") + ", Pokemon " + saveLocation[0].version_details[0].version.name[0].toUpperCase() + saveLocation[0].version_details[0].version.name.substring(1));
-            //     } else {
-            //         setLocation("Location: N/A");
-            //     }
-            // } else {
-            //     setLocation("Location: N/A");
-            // };
-        }
     }, [isFlipped])
+
 
     return (
         <div>
@@ -165,24 +78,34 @@ const MainComponent = () => {
             <div className="flex justify-center">
                 <div className="bgColor mb-12 lg:mb-16 w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
-                        <PokeNameComponent name={data.name} />
+                        {
+                            data && <PokeNameComponent name={data.name} />
+                        }
                         <img id="favBtn" className="w-9 h-9 sm:w-12 sm:h-12 ml-5" src={heartOut} alt="Favorite Button" />
                     </div>
-                    <PokeIdComponent id={data.id} />
+                    {
+                        data && <PokeIdComponent id={data.id} />
+                    }
 
                     <div className="grid lg:flex justify-evenly">
                         <div className="grid grid-cols-1">
                             <p className="text-center text-xl lg:text-3xl kotta">Normal</p>
-                            <NormalPokeImgComponent normalFront={data.sprites.other["official-artwork"].front_default} />
+                            {
+                                data && <NormalPokeImgComponent normalFront={data.sprites.other["official-artwork"].front_default} />
+                            }
                         </div>
 
                         <div className="grid grid-cols-1">
                             <p className="text-center text-xl lg:text-3xl kotta">Shiny</p>
-                            <ShinyPokeImgComponent shinyFront={data.sprites.other["official-artwork"].front_shiny} />
+                            {
+                                data && <ShinyPokeImgComponent shinyFront={data.sprites.other["official-artwork"].front_shiny} />
+                            }
                         </div>
                     </div>
 
-                    <p className="mx-10 sm:mx-0 mt-5 mb-10 text-center text-xl sm:text-3xl kotta">{location}</p>
+                    {
+                        data && <LocComponent location={data.location_area_encounters} />
+                    }
                 </div>
             </div>
 

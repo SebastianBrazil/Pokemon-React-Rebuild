@@ -36,18 +36,6 @@ export interface pokeLocationArr {
     }
 }
 
-export interface drilledOneLoc {
-    location: {
-        url: string
-    }
-}
-
-export interface drilledTwoLoc {
-    id: number
-}
-
-
-
 
 
 export interface pokePropsF {
@@ -64,4 +52,8 @@ export interface pokePropsN {
 
 export interface pokePropsI {
     id: number
+}
+
+export interface pokePropsL {
+    location: string
 }
