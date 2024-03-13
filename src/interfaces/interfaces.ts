@@ -25,9 +25,31 @@ export interface pokeLocationArr {
         location_area: {
             name: string
             url: string
+        },
+        version_details: {
+            [0]: {
+                version: {
+                    name: string
+                }
+            }
         }
     }
 }
+
+export interface drilledOneLoc {
+    location: {
+        url: string
+    }
+}
+
+export interface drilledTwoLoc {
+    id: number
+}
+
+
+
+
+
 export interface pokePropsF {
     normalFront: string
 }

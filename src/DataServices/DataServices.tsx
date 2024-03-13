@@ -1,4 +1,4 @@
-import { pokeInterface } from "../interfaces/interfaces";
+import { pokeInterface, pokeLocationArr } from "../interfaces/interfaces";
 
 export const callFetchPoke = async (input: string) => {
     const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
@@ -16,17 +16,6 @@ export const callFetchPoke = async (input: string) => {
 
 export const grabAPI = async (topData: string) => {
     const promise = await fetch(`${topData}`);
-    const data = await promise.json();
+    const data: pokeLocationArr = await promise.json();
     return data;
 }
-
-// export const popLocateDrillOne = async (topData: string) => {
-//     const promise = await fetch(`${topData}`);
-//     const data = await promise.json();
-//     return data;
-// }
-// export const popLocate = async (topData: string) => {
-//     const promise = await fetch(`${topData}`);
-//     const data = await promise.json();
-//     return data;
-// }
