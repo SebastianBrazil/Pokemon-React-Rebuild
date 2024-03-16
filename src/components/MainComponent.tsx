@@ -17,6 +17,7 @@ import ShinyPokeImgComponent from './minorComps/ShinyPokeImgComponent';
 import PokeNameComponent from './minorComps/PokeNameComponent';
 import PokeIdComponent from './minorComps/PokeIdComponent';
 import LocComponent from './minorComps/LocComponent';
+import TypesComponent from './minorComps/TypesComponent';
 
 const MainComponent = () => {
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -38,7 +39,6 @@ const MainComponent = () => {
         }
         getData();
     }, [isFlipped])
-
 
     return (
         <div>
@@ -128,7 +128,9 @@ const MainComponent = () => {
 
                     <div className="grid justify-evenly lg:grid-cols-2 mt-8">
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:ml-32 lg:pr-5">
-                            <p id="eleType" className="text-xl sm:text-2xl kotta sm:h-20 h-16 mt-5 overflow-y-auto">element type</p>
+                            {
+                                data && <TypesComponent types={data.types}/>
+                            }
                             <p id="abilities" className="text-xl sm:text-2xl kotta h-16 sm:h-20 overflow-y-auto">all abilities</p>
                             <p id="evol" className="text-xl sm:text-2xl kotta h-16 sm:h-20 mb-4 sm:mb-8 overflow-y-auto">all evolution paths</p>
                         </div>

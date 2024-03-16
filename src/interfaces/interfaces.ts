@@ -38,6 +38,16 @@ export interface pokeLocationArr {
 
 
 
+export interface pokePropsType {
+    types: innerPokePropsType[]
+}
+
+export interface innerPokePropsType {
+    type: {
+        name: string
+    }
+}
+
 export interface pokePropsF {
     normalFront: string
 }
