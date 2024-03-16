@@ -54,6 +54,16 @@ export interface pokePropsI {
     id: number
 }
 
+export interface pokePropsLNS {
+    location: string,
+}
+
 export interface pokePropsL {
-    location: string
+    location: string,
+    passed: string
+}
+
+export interface pokePropsB {
+    bool: boolean,
+    passed: string
 }

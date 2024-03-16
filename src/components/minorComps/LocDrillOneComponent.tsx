@@ -7,17 +7,21 @@ const LocDrillOneComponent = (props: pokePropsL) => {
     const [drilledLocOne, setDrilledLocOne] = useState<string>();
 
     useEffect(() => {
-        const drillLocateData = async () => {
-            const locationData = await grabAPI(props.location);
-            setDrilledLocOne(locationData.location.url)
+        try {
+            const drillLocateData = async () => {
+                const locationData = await grabAPI(props.location);
+                setDrilledLocOne(locationData.location.url)
+            }
+            drillLocateData();
+        } catch {
+            setDrilledLocOne("Error");
         }
-        drillLocateData();
     }, [props])
 
     return (
         <>
             {
-                drilledLocOne && <LocDrillTwoComponent location={drilledLocOne} />
+                drilledLocOne && <LocDrillTwoComponent location={drilledLocOne} passed={props.passed} />
             }
         </>
     )

@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { pokePropsL } from '../../interfaces/interfaces';
 import { grabAPI } from '../../DataServices/DataServices';
+import LocPopComponent from './LocPopComponent';
 
 const LocDrillTwoComponent = (props: pokePropsL) => {
-    const [location, setLocation] = useState<string>("Loading...");
+    const [locationVer, setLocationVer] = useState<boolean>();
 
     useEffect(() => {
-        const drillLocateDataTwo = async () => {
-            const locationData = await grabAPI(props.location);
-            if (locationData.id < 567) {
-                setLocation(locationData.id);
-            }else{
-                setLocation("Location: N/A");
+        try {
+            const drillLocateDataTwo = async () => {
+                const locationData = await grabAPI(props.location);
+                if (locationData.id !== undefined && locationData.id < 567) {
+                    setLocationVer(true);
+                } else {
+                    setLocationVer(false);
+                }
             }
+            drillLocateDataTwo();
+        } catch {
+            setLocationVer(false);
         }
-        drillLocateDataTwo();
     }, [props])
 
 
     return (
         <>
-            <p className="mx-10 sm:mx-0 mt-5 mb-10 text-center text-xl sm:text-3xl kotta">{location}</p>
+            {
+                locationVer && <LocPopComponent bool={locationVer} passed={props.passed} />
+            }
         </>
     )
 }
