@@ -1,18 +1,18 @@
-import { pokeInterface, pokeLocationArr } from "../interfaces/interfaces";
-
 export const callFetchPoke = async (input: string) => {
+    let data;
     try {
         const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
-        const data: pokeInterface = await promise.json();
-
-        if (data.id < 650) {
-            return data;
-        } else {
-            // return data;
-        }
+        data = await promise.json();
     } catch {
-
+        data = "Not Found";
     }
+    return data;
+}
+
+export const fastCallFetchPoke = async (input: string) => {
+    const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
+    const data = await promise.json();
+    return data;
 }
 
 export const grabAPI = async (topData: string) => {

@@ -11,7 +11,7 @@ import plus from "../assets/plus.png";
 import redC from "../assets/redC.png";
 import yellowC from "../assets/yellowC.png";
 import { pokeInterface } from '../interfaces/interfaces';
-import { callFetchPoke } from '../DataServices/DataServices';
+import { callFetchPoke, fastCallFetchPoke } from '../DataServices/DataServices';
 import NormalPokeImgComponent from './minorComps/NormalPokeImgComponent';
 import ShinyPokeImgComponent from './minorComps/ShinyPokeImgComponent';
 import PokeNameComponent from './minorComps/PokeNameComponent';
@@ -21,16 +21,25 @@ import TypesComponent from './minorComps/TypesComponent';
 import AbilitiesComponent from './minorComps/AbilitiesComponent';
 import MovesComponent from './minorComps/MovesComponent';
 import EvolutionComponent from './minorComps/EvolutionComponent';
+import PopupComponent from './minorComps/PopupComponent';
+import { getLocalStorage, removeFromLocalStorage, saveToLocalStorage } from '../DataServices/localStorage';
 
 const MainComponent = () => {
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
+    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
     const [input, setInput] = useState<string>("bulbasaur");
+    const [globalPoke, setGlobalPoke] = useState<string>("bulbasaur");
+    const [passString, setPassString] = useState<string>();
+    const [changeHeart, setChangeHeart] = useState<string>();
 
     const [data, setData] = useState<pokeInterface>();
 
     function callSearch() {
         if (input.toLowerCase() !== "") {
             setIsFlipped(!isFlipped);
+        }else{
+            setPassString("Search is Empty");
+            setIsPopupOpen(false);
         }
     }
 
@@ -39,20 +48,67 @@ const MainComponent = () => {
         let stringy = numby as unknown as string;
         setInput(stringy);
         setIsFlipped(!isFlipped);
+        setPassString("Available")
+        setIsPopupOpen(false);
+    }
+
+    function savePoke() {
+        let localStorageCheck = getLocalStorage();
+
+        if (localStorageCheck.includes(data?.name)) {
+            removeFromLocalStorage(data!.name);
+            setChangeHeart(heartOut);
+        } else {
+            saveToLocalStorage(data!.name);
+            setChangeHeart(heart);
+        }
+    }
+
+    function openPopup(){
+        setPassString("Available");
+        setIsPopupOpen(!isPopupOpen);
     }
 
     const getData = () => {
         const innerGetData = async () => {
             const pokeData = await callFetchPoke(input);
-            setData(pokeData);
+            if (pokeData !== "Not Found") {
+                setGlobalPoke(pokeData.name);
+
+                if (pokeData.id < 650) {
+                    setData(pokeData);
+
+                    let localStorageCheck = getLocalStorage();
+                    if (localStorageCheck.includes(pokeData?.name)) {
+                        setChangeHeart(heart);
+                    } else {
+                        setChangeHeart(heartOut);
+                    }
+
+                    setPassString("Available")
+                    setIsPopupOpen(false);
+                }else{
+                    const pokeData = await fastCallFetchPoke(globalPoke);
+                    setPassString("Pokemon Is Not Available, Up To Gen 5 (ID < 650) Only")
+                    setIsPopupOpen(false);
+                    setData(pokeData);
+                }
+            } else {
+                const pokeData = await fastCallFetchPoke(globalPoke);
+                setPassString("Could Not Get Pokemon. Check Spelling Or Input Valid ID")
+                setIsPopupOpen(false);
+                setData(pokeData);
+            }
         }
         innerGetData();
     }
 
     useEffect(() => {
         getData();
-        setInput("");
         setData(undefined);
+        setInput("");
+        setIsPopupOpen(false);
+        setPassString(undefined)
     }, [isFlipped])
 
     return (
@@ -93,10 +149,10 @@ const MainComponent = () => {
             <div className="flex justify-center h-[608px] sm:h-[664px] lg:h-[440px]">
                 <div className="bgColor w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
+                        <PokeNameComponent name={data ? data.name : "Loading..."} />
                         {
-                            data && <PokeNameComponent name={data.name} />
+                            data && <img onClick={savePoke} className="w-9 h-9 sm:w-12 sm:h-12 ml-5" src={changeHeart} alt="Favorite Button" />
                         }
-                        <img id="favBtn" className="w-9 h-9 sm:w-12 sm:h-12 ml-5" src={heartOut} alt="Favorite Button" />
                     </div>
                     {
                         data && <PokeIdComponent id={data.id} />
@@ -104,14 +160,18 @@ const MainComponent = () => {
 
                     <div className="grid lg:flex justify-evenly">
                         <div className="grid grid-cols-1">
-                            <p className="text-center text-xl lg:text-3xl kotta">Normal</p>
+                            {
+                                data && <p className="text-center text-xl lg:text-3xl kotta">Normal</p>
+                            }
                             {
                                 data && <NormalPokeImgComponent normalFront={data.sprites.other["official-artwork"].front_default} />
                             }
                         </div>
 
                         <div className="grid grid-cols-1">
-                            <p className="text-center text-xl lg:text-3xl kotta">Shiny</p>
+                            {
+                                data && <p className="text-center text-xl lg:text-3xl kotta">Shiny</p>
+                            }
                             {
                                 data && <ShinyPokeImgComponent shinyFront={data.sprites.other["official-artwork"].front_shiny} />
                             }
@@ -128,18 +188,13 @@ const MainComponent = () => {
                 <div className="bgColor w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
                         <button onClick={randomCallSearch} className="randColor w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl flex justify-center items-center border border-black"><img className="sm:w-11 sm:h-11 w-9 h-9" src={dine} alt="Randomize Button" /> </button>
-                        <input value={input} onChange={(e) => setInput(e.target.value)} className="searchColor w-56 h-12 sm:w-80 sm:h-16 mx-2 rounded-2xl sm:rounded-3xl border border-black sm:text-2xl kotta pl-3" type="text" placeholder="Search Name Or ID: " />
+                        <input onClick={openPopup} value={input} onChange={(e) => setInput(e.target.value)} className="searchColor w-56 h-12 sm:w-80 sm:h-16 mx-2 rounded-2xl sm:rounded-3xl border border-black sm:text-2xl kotta pl-3" type="text" placeholder="Search Name Or ID: " />
                         <img onClick={callSearch} className="sm:w-10 sm:h-10 w-8 h-8 mt-2 sm:mt-3" src={glass} alt="search btn" />
                     </div>
 
-                    {/* <div className="absolute 2xl:movePls1 sm:movePls2 movePls3 lg:movePls4">
-                        <div id="openFav" className="hidee ml-6 sm:ml-8 mx-2 favoritesColor w-56 sm:w-80 rounded-2xl sm:rounded-3xl border border-black">
-                            <div className="flex justify-start ml-5 mt-3 mb-3">
-                                <p className="text-left sm:text-2xl kotta">Bulbasaur</p>
-                                <img className="w-8 h-8 ml-3" src={heart} alt="Favorite Heart Inside Favorite List" />
-                            </div>
-                        </div>
-                    </div> */}
+                    {
+                        passString && <PopupComponent check={isPopupOpen} notFound={passString}/>
+                    }
 
                     <div className="grid justify-evenly lg:grid-cols-2 mt-8">
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:ml-32 lg:pr-5">

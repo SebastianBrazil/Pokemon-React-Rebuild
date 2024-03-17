@@ -99,3 +99,8 @@ export interface pokePropsE {
 export interface innerPokePropsE {
     url: string
 }
+
+export interface checkIfOpen {
+    check: boolean,
+    notFound: string
+}
