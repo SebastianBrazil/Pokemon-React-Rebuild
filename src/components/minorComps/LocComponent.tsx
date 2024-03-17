@@ -1,36 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { pokePropsLNS } from '../../interfaces/interfaces'
+import { pokeLocationArr, pokePropsLNS } from '../../interfaces/interfaces'
 import { grabAPI } from '../../DataServices/DataServices';
-import LocDrillOneComponent from './LocDrillOneComponent';
 
 const LocComponent = (props: pokePropsLNS) => {
+    const [saveData, setSaveData] = useState<string>();
 
-    const [saveLocation, setSaveLocation] = useState<string>();
-    const [savePass, setSavePass] = useState<string>();
+    const pleaseDontBreak = (topData: pokePropsLNS) => {
+        let globalLocData: pokeLocationArr;
+        let getLocURL: string;
+        let drilledLocOne: string;
 
-    useEffect(() => {
         try {
             const getLocationData = async () => {
-                const locationData = await grabAPI(props.location);
-                if (locationData.length > 0) {
-                    setSaveLocation(locationData[0].location_area.url);
-                    setSavePass(props.location);
+                const locationData = await grabAPI(topData.location);
+                globalLocData = await locationData;
+                getLocURL = await locationData[0].location_area.url;
+
+                const dOne = await grabAPI(getLocURL);
+                drilledLocOne = await dOne.location.url;
+
+                const dTwo = await grabAPI(drilledLocOne);
+                if (dTwo.id < 567) {
+                    const locationName = globalLocData[0].location_area.name.split("-");
+                    for (let i = 0; i < locationName.length; i++) {
+                        locationName[i] = locationName[i][0].toUpperCase() + locationName[i].substring(1);
+                    }
+                    setSaveData("Location: " + locationName.join(" ") + ", Pokemon " + globalLocData[0].version_details[0].version.name[0].toUpperCase() + globalLocData[0].version_details[0].version.name.substring(1));
                 } else {
-                    setSaveLocation("Error");
-                    setSavePass("Error");
+                    setSaveData("Location: N/A");
                 }
             }
             getLocationData();
-        } catch { 
-            setSaveLocation("Error");
-            setSavePass("Error");
+        } catch {
+            setSaveData("Location: N/A");
         }
+    }
+
+    useEffect(() => {
+        pleaseDontBreak(props);
     }, [props])
 
     return (
         <>
             {
-                saveLocation && savePass && <LocDrillOneComponent location={saveLocation} passed={savePass} />
+                <p className="mx-10 sm:mx-0 mt-5 mb-10 text-center text-xl sm:text-3xl kotta">{saveData}</p>
             }
         </>
     )

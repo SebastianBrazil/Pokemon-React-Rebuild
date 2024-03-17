@@ -154,7 +154,7 @@
 //     popEvol(data);
 // };
 
-//Is called in the popPoke, fetches data needed to populate the location
+// Is called in the popPoke, fetches data needed to populate the location
 // const popLocate = async (topData) => {
 //     const promise = await fetch(`${topData.location_area_encounters}`);
 //     const data = await promise.json();

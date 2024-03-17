@@ -1,6 +1,6 @@
-export interface localStoredPoke {
+// export interface localStoredPoke {
     // pokemon: string[]
-}
+// }
 
 export interface pokeInterface {
     abilities: [],
@@ -66,14 +66,4 @@ export interface pokePropsI {
 
 export interface pokePropsLNS {
     location: string,
-}
-
-export interface pokePropsL {
-    location: string,
-    passed: string
-}
-
-export interface pokePropsB {
-    bool: boolean,
-    passed: string
 }

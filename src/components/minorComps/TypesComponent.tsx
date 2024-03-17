@@ -4,7 +4,7 @@ import { innerPokePropsType, pokePropsType } from '../../interfaces/interfaces';
 const TypesComponent = (props: pokePropsType) => {
     const [returnType, setReturnType] = useState<string>();
 
-    const bruh = () => {
+    const getTypes = () => {
         let fill: string = "";
         for (let i = 0; i < props.types.length; i++) {
             switch (i) {
@@ -20,7 +20,7 @@ const TypesComponent = (props: pokePropsType) => {
     }
 
     useEffect(() => {
-        setReturnType(bruh());
+        setReturnType(getTypes());
     }, [props])
 
     return (
