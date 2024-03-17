@@ -5,10 +5,10 @@ export const callFetchPoke = async (input: string) => {
         const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
         const data: pokeInterface = await promise.json();
 
-        if (data.id < 560) {
+        if (data.id < 650) {
             return data;
         } else {
-            return data;
+            // return data;
         }
     } catch {
 
