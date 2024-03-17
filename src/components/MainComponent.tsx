@@ -193,7 +193,7 @@ const MainComponent = () => {
                     </div>
 
                     {
-                        passString && <PopupComponent check={isPopupOpen} notFound={passString}/>
+                        passString && <PopupComponent check={isPopupOpen} notFound={passString} returnValue={setInput} effect={isFlipped} returnEffect={setIsFlipped}/>
                     }
 
                     <div className="grid justify-evenly lg:grid-cols-2 mt-8">

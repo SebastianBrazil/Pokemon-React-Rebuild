@@ -1,6 +1,4 @@
-// export interface localStoredPoke {
-// pokemon: string[]
-// }
+import { Dispatch, SetStateAction } from "react";
 
 export interface pokeInterface {
     abilities: [],
@@ -103,4 +101,7 @@ export interface innerPokePropsE {
 export interface checkIfOpen {
     check: boolean,
     notFound: string
+    returnValue: Dispatch<SetStateAction<string>>
+    returnEffect: Dispatch<SetStateAction<boolean>>
+    effect: boolean
 }
