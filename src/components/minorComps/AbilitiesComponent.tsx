@@ -26,7 +26,7 @@ const AbilitiesComponent = (props: pokePropsAbilities) => {
     return (
         <>
             {
-                <p className="text-xl sm:text-2xl kotta h-16 sm:h-20 overflow-y-auto">{returnAbility}</p>
+                returnAbility && <p className="text-xl sm:text-2xl kotta h-16 sm:h-20 overflow-y-auto">{returnAbility}</p>
             }
         </>
     )

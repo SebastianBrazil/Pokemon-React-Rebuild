@@ -94,7 +94,7 @@ const EvolutionComponent = (props: pokePropsE) => {
         <>
             {
                 // <p className="text-xl sm:text-2xl kotta h-16 sm:h-20 mb-4 sm:mb-8 overflow-y-auto">{}</p>
-                <p className="text-xl sm:text-2xl kotta h-16 sm:h-20 mb-4 sm:mb-8 overflow-y-auto">{returnEvol}</p>
+                returnEvol && <p className="text-xl sm:text-2xl kotta h-16 sm:h-20 mb-4 sm:mb-8 overflow-y-auto">{returnEvol}</p>
             }
         </>
     )

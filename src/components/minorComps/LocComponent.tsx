@@ -10,12 +10,11 @@ const LocComponent = (props: pokePropsLNS) => {
         let getLocURL: string;
         let drilledLocOne: string;
 
-        try {
-            const getLocationData = async () => {
-                const locationData = await grabAPI(topData.location);
+        const getLocationData = async () => {
+            const locationData = await grabAPI(topData.location);
+            if (locationData.length !== 0) {
                 globalLocData = await locationData;
                 getLocURL = await locationData[0].location_area.url;
-
                 const dOne = await grabAPI(getLocURL);
                 drilledLocOne = await dOne.location.url;
 
@@ -29,11 +28,11 @@ const LocComponent = (props: pokePropsLNS) => {
                 } else {
                     setSaveData("Location: N/A");
                 }
+            } else {
+                setSaveData("Location: N/A");
             }
-            getLocationData();
-        } catch {
-            setSaveData("Location: N/A");
         }
+        getLocationData();
     }
 
     useEffect(() => {
@@ -43,7 +42,7 @@ const LocComponent = (props: pokePropsLNS) => {
     return (
         <>
             {
-                <p className="mx-10 sm:mx-0 mt-5 mb-10 text-center text-xl sm:text-3xl kotta">{saveData}</p>
+                saveData && <p className="mx-10 sm:mx-0 mt-5 mb-10 text-center text-xl sm:text-3xl kotta">{saveData}</p>
             }
         </>
     )

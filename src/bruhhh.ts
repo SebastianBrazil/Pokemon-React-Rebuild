@@ -314,7 +314,11 @@
 // //Calls on pokemon id#1 every time the website is loaded
 // // FetchPoke(1);
 
-import React, { useEffect, useState } from 'react'
+
+
+
+
+// import React, { useEffect, useState } from 'react'
 
 // const [searchInput, setSearchInput] = useState<string>('');
 // const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -328,14 +332,14 @@ import React, { useEffect, useState } from 'react'
 //     adviceData();
 // }, [isFlipped])
 
-function getLocalStorage<localStoredPoke>(key: string): localStoredPoke | null {
-    const getPoke = localStorage.getItem(key);
-    return getPoke ? JSON.parse(getPoke) as localStoredPoke : null;
-}
+// function getLocalStorage<localStoredPoke>(key: string): localStoredPoke | null {
+//     const getPoke = localStorage.getItem(key);
+//     return getPoke ? JSON.parse(getPoke) as localStoredPoke : null;
+// }
 // getLocalStorage('Pokemon');
 
-function setItem<localStoredPoke>(key: string, value: localStoredPoke): void {
-    localStorage.setItem(key, JSON.stringify(value));
-}
+// function setItem<localStoredPoke>(key: string, value: localStoredPoke): void {
+//     localStorage.setItem(key, JSON.stringify(value));
+// }
 
 export {}

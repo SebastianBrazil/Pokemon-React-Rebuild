@@ -38,7 +38,7 @@ const MovesComponent = (props: pokePropsMove) => {
     return (
         <>
             {
-                <p className="h-52 mb-10 sm:mb-14 lg:mb-20 text-xl sm:text-2xl kotta overflow-y-auto">{returnMove}</p>
+                returnMove && <p className="h-52 mb-10 sm:mb-14 lg:mb-20 text-xl sm:text-2xl kotta overflow-y-auto">{returnMove}</p>
             }
         </>
     )

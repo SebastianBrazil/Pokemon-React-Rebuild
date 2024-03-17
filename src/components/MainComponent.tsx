@@ -34,13 +34,20 @@ const MainComponent = () => {
         }
     }
 
+    function randomCallSearch() {
+        let numby = 1 + Math.floor(Math.random() * 649)
+        let stringy = numby as unknown as string;
+        setInput(stringy);
+        setIsFlipped(!isFlipped);
+    }
+
     useEffect(() => {
         const getData = async () => {
-            const pokeData = await callFetchPoke(input.toLowerCase());
+            const pokeData = await callFetchPoke(input);
             setData(pokeData);
-            setInput("");
         }
         getData();
+        setInput("");
     }, [isFlipped])
 
     return (
@@ -115,7 +122,7 @@ const MainComponent = () => {
             <div className="flex justify-center mb-7">
                 <div className="bgColor w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
-                        <button id="randomPoke" className="randColor w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl flex justify-center items-center border border-black"><img className="sm:w-11 sm:h-11 w-9 h-9" src={dine} alt="Randomize Button" /> </button>
+                        <button onClick={randomCallSearch} className="randColor w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl flex justify-center items-center border border-black"><img className="sm:w-11 sm:h-11 w-9 h-9" src={dine} alt="Randomize Button" /> </button>
                         <input value={input} onChange={(e) => setInput(e.target.value)} className="searchColor w-56 h-12 sm:w-80 sm:h-16 mx-2 rounded-2xl sm:rounded-3xl border border-black sm:text-2xl kotta pl-3" type="text" placeholder="Search Name Or ID: " />
                         <img onClick={callSearch} className="sm:w-10 sm:h-10 w-8 h-8 mt-2 sm:mt-3" src={glass} alt="search btn" />
                     </div>
@@ -132,18 +139,18 @@ const MainComponent = () => {
                     <div className="grid justify-evenly lg:grid-cols-2 mt-8">
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:ml-32 lg:pr-5">
                             {
-                                data && <TypesComponent types={data.types}/>
+                                data && <TypesComponent types={data.types} />
                             }
                             {
-                                data && <AbilitiesComponent abilities={data.abilities}/>
+                                data && <AbilitiesComponent abilities={data.abilities} />
                             }
                             {
-                                data && <EvolutionComponent species={data.species}/>
+                                data && <EvolutionComponent species={data.species} />
                             }
                         </div>
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:mr-32">
                             {
-                                data && <MovesComponent moves={data.moves}/>
+                                data && <MovesComponent moves={data.moves} />
                             }
                         </div>
                     </div>
