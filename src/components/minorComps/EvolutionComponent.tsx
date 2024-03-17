@@ -7,10 +7,10 @@ const EvolutionComponent = (props: pokePropsE) => {
 
     let returnString: string;
 
-    const getEvol = (props: pokePropsE) => {
+    const getEvol = (topData: string) => {
         try {
             const popEvol = async () => {
-                const dataOne = await grabAPI(`${props.species.url}`);
+                const dataOne = await grabAPI(`${topData}`);
                 const dataTwo = await grabAPI(`${dataOne.evolution_chain.url}`);
 
                 try {
@@ -86,7 +86,7 @@ const EvolutionComponent = (props: pokePropsE) => {
     }
 
     useEffect(() => {
-        getEvol(props);
+        getEvol(props.species.url);
     }, [props])
 
 

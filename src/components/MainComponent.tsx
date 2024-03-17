@@ -41,13 +41,18 @@ const MainComponent = () => {
         setIsFlipped(!isFlipped);
     }
 
-    useEffect(() => {
-        const getData = async () => {
+    const getData = () => {
+        const innerGetData = async () => {
             const pokeData = await callFetchPoke(input);
             setData(pokeData);
         }
+        innerGetData();
+    }
+
+    useEffect(() => {
         getData();
         setInput("");
+        setData(undefined);
     }, [isFlipped])
 
     return (
@@ -85,8 +90,8 @@ const MainComponent = () => {
                 </div>
             </div>
 
-            <div className="flex justify-center">
-                <div className="bgColor mb-12 lg:mb-16 w-11/12 lg:w-3/5">
+            <div className="flex justify-center h-[608px] sm:h-[664px] lg:h-[440px]">
+                <div className="bgColor w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
                         {
                             data && <PokeNameComponent name={data.name} />
@@ -119,7 +124,7 @@ const MainComponent = () => {
                 </div>
             </div>
 
-            <div className="flex justify-center mb-7">
+            <div className="flex justify-center mt-12 lg:mt-16 mb-7 h-[588px] sm:h-[684px] lg:h-[420px]">
                 <div className="bgColor w-11/12 lg:w-3/5">
                     <div className="pt-8 flex justify-center">
                         <button onClick={randomCallSearch} className="randColor w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl flex justify-center items-center border border-black"><img className="sm:w-11 sm:h-11 w-9 h-9" src={dine} alt="Randomize Button" /> </button>

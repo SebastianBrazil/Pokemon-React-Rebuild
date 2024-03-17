@@ -5,13 +5,13 @@ import { grabAPI } from '../../DataServices/DataServices';
 const LocComponent = (props: pokePropsLNS) => {
     const [saveData, setSaveData] = useState<string>();
 
-    const pleaseDontBreak = (topData: pokePropsLNS) => {
+    const pleaseDontBreak = (topData: string) => {
         let globalLocData: pokeLocationArr;
         let getLocURL: string;
         let drilledLocOne: string;
 
         const getLocationData = async () => {
-            const locationData = await grabAPI(topData.location);
+            const locationData = await grabAPI(topData);
             if (locationData.length !== 0) {
                 globalLocData = await locationData;
                 getLocURL = await locationData[0].location_area.url;
@@ -36,7 +36,7 @@ const LocComponent = (props: pokePropsLNS) => {
     }
 
     useEffect(() => {
-        pleaseDontBreak(props);
+        pleaseDontBreak(props.location);
     }, [props])
 
     return (
