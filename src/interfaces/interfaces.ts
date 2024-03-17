@@ -1,5 +1,5 @@
 // export interface localStoredPoke {
-    // pokemon: string[]
+// pokemon: string[]
 // }
 
 export interface pokeInterface {
@@ -16,7 +16,9 @@ export interface pokeInterface {
             }
         }
     },
-    species: {},
+    species: {
+        url: string;
+    },
     location_area_encounters: string
 }
 
@@ -38,13 +40,33 @@ export interface pokeLocationArr {
 
 
 
+export interface pokePropsMove {
+    moves: innerPokePropsMove[]
+}
+
+interface innerPokePropsMove {
+    move: {
+        name: string
+    }
+}
+
 export interface pokePropsType {
     types: innerPokePropsType[]
 }
 
-export interface innerPokePropsType {
+interface innerPokePropsType {
     type: {
         name: string
+    }
+}
+
+export interface pokePropsAbilities {
+    abilities: innerPokePropsAbilities[]
+}
+
+interface innerPokePropsAbilities {
+    ability: {
+        name: string;
     }
 }
 
@@ -66,4 +88,14 @@ export interface pokePropsI {
 
 export interface pokePropsLNS {
     location: string,
+}
+
+export interface pokePropsE {
+    species: {
+        url: string
+    }
+}
+
+export interface innerPokePropsE {
+    url: string
 }

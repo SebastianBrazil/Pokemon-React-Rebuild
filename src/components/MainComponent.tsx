@@ -18,6 +18,9 @@ import PokeNameComponent from './minorComps/PokeNameComponent';
 import PokeIdComponent from './minorComps/PokeIdComponent';
 import LocComponent from './minorComps/LocComponent';
 import TypesComponent from './minorComps/TypesComponent';
+import AbilitiesComponent from './minorComps/AbilitiesComponent';
+import MovesComponent from './minorComps/MovesComponent';
+import EvolutionComponent from './minorComps/EvolutionComponent';
 
 const MainComponent = () => {
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -117,25 +120,31 @@ const MainComponent = () => {
                         <img onClick={callSearch} className="sm:w-10 sm:h-10 w-8 h-8 mt-2 sm:mt-3" src={glass} alt="search btn" />
                     </div>
 
-                    <div className="absolute 2xl:movePls1 sm:movePls2 movePls3 lg:movePls4">
+                    {/* <div className="absolute 2xl:movePls1 sm:movePls2 movePls3 lg:movePls4">
                         <div id="openFav" className="hidee ml-6 sm:ml-8 mx-2 favoritesColor w-56 sm:w-80 rounded-2xl sm:rounded-3xl border border-black">
                             <div className="flex justify-start ml-5 mt-3 mb-3">
                                 <p className="text-left sm:text-2xl kotta">Bulbasaur</p>
                                 <img className="w-8 h-8 ml-3" src={heart} alt="Favorite Heart Inside Favorite List" />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="grid justify-evenly lg:grid-cols-2 mt-8">
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:ml-32 lg:pr-5">
                             {
                                 data && <TypesComponent types={data.types}/>
                             }
-                            <p id="abilities" className="text-xl sm:text-2xl kotta h-16 sm:h-20 overflow-y-auto">all abilities</p>
-                            <p id="evol" className="text-xl sm:text-2xl kotta h-16 sm:h-20 mb-4 sm:mb-8 overflow-y-auto">all evolution paths</p>
+                            {
+                                data && <AbilitiesComponent abilities={data.abilities}/>
+                            }
+                            {
+                                data && <EvolutionComponent species={data.species}/>
+                            }
                         </div>
                         <div className="mx-8 sm:mx-36 lg:mx-0 lg:mr-32">
-                            <p className="h-52 mb-10 sm:mb-14 lg:mb-20 text-xl sm:text-2xl kotta overflow-y-auto" id="movesPoke">all moves</p>
+                            {
+                                data && <MovesComponent moves={data.moves}/>
+                            }
                         </div>
                     </div>
                 </div>

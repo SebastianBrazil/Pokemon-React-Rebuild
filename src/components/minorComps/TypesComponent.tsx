@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { innerPokePropsType, pokePropsType } from '../../interfaces/interfaces';
+import { pokePropsType } from '../../interfaces/interfaces';
 
 const TypesComponent = (props: pokePropsType) => {
     const [returnType, setReturnType] = useState<string>();
@@ -26,7 +26,7 @@ const TypesComponent = (props: pokePropsType) => {
     return (
         <>
             {
-                returnType && <p id="eleType" className="text-xl sm:text-2xl kotta sm:h-20 h-16 mt-5 overflow-y-auto">{returnType}</p>
+                returnType && <p className="text-xl sm:text-2xl kotta sm:h-20 h-16 mt-5 overflow-y-auto">{returnType}</p>
             }
         </>
     )
